@@ -21,6 +21,7 @@ class UsersController extends Controller
      * */
     public function create()
     {
+        //dd( trans('demo.user_not_exists'));
         return view('users.create');
     }
 
