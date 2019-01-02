@@ -15,12 +15,12 @@
     return view('welcome');
 });*/
 
-Route::get('/', 'StaticPagesController@home')->name('home');
-Route::get('/help', 'StaticPagesController@help')->name('help');
-Route::get('/about', 'StaticPagesController@about')->name('about');
+Route::get('/', 'StaticPagesController@home')->name('home');//主页
+Route::get('/help', 'StaticPagesController@help')->name('help');//帮助页
+Route::get('/about', 'StaticPagesController@about')->name('about');//关于页
 
-Route::get('signUp', 'UsersController@create')->name('signUp');
-Route::resource('users', 'UsersController');
+Route::get('signUp', 'UsersController@create')->name('signUp');//注册
+Route::resource('users', 'UsersController');//用户控制器
 /*Route::get('/users', 'UsersController@index')->name('users.index');
 Route::get('/users/create', 'UsersController@create')->name('users.create');
 Route::get('/users/{user}', 'UsersController@show')->name('users.show');
@@ -28,3 +28,7 @@ Route::post('/users', 'UsersController@store')->name('users.store');
 Route::get('/users/{user}/edit', 'UsersController@edit')->name('users.edit');
 Route::patch('/users/{user}', 'UsersController@update')->name('users.update');
 Route::delete('/users/{user}', 'UsersController@destroy')->name('users.destroy');*/
+
+Route::get('login', 'SessionsController@create')->name('login');//显示登录页面
+Route::post('login', 'SessionsController@store')->name('login');//创建新会话（登录）
+Route::delete('logout', 'SessionsController@destroy')->name('logout');//销毁会话（退出登录）
