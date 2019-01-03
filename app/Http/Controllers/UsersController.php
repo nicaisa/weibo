@@ -10,21 +10,26 @@ class UsersController extends Controller
 {
     public function __construct()
     {
+        //只让登陆用户访问的方法
+        //except ->把。。。排除在外
         $this->middleware('auth', [
-            'except' => ['show', 'create', 'store']
+            'except' => ['show', 'create', 'store',  'index']
         ]);
 
+        //只让未登陆用户访问的方法
+        //only ->只允许访问create方法
         $this->middleware('guest', [
             'only' => ['create']
         ]);
     }
 
     /*
-     *用戶主頁
+     *用戶列表的信息
      * */
-    public function index(User $user)
+    public function index()
     {
-        return view('users.index', compact('user'));
+        $users = User::paginate(10);
+        return view('users.index', compact('users'));
     }
 
 
