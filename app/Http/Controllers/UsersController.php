@@ -106,7 +106,7 @@ class UsersController extends Controller
         return redirect()->route('users.show', [$user]);
     }
 
-    
+
     /*
      * 编辑用户资料
      * @author: plum
