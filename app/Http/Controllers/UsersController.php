@@ -13,7 +13,7 @@ class UsersController extends Controller
         //只让登陆用户访问的方法
         //except ->把。。。排除在外
         $this->middleware('auth', [
-            'except' => ['show', 'create', 'store',  'index']
+            'except' => ['show', 'create', 'store',  'index', 'confirmEmail']
         ]);
 
         //只让未登陆用户访问的方法
@@ -68,11 +68,45 @@ class UsersController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        Auth::login($user);
+        //Auth::login($user);
+        $this->sendEmailConfirmationTo($user);
         session()->flash('success', '欢迎，您将在这里开启一段新的旅程~');
         return redirect()->route('user.show', [$user]);
     }
 
+    /*
+     *发送邮件给指定用户
+     * */
+    protected function sendEmailConfirmationTo($user)
+    {
+        $view ='emails.confirm';
+        $data = compact('user');
+        $from = '1010114387@qq.com';
+        $name = 'plum';
+        $to = $user->email;
+        $subject = "感谢注册 Weibo 应用！请确认你的邮箱。";
+
+        Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject) {
+            $message->from($from, $name)->to($to)->subject($subject);
+        });
+    }
+
+    /*
+     *邮箱激活
+     * */
+    public function confirmEmail($token)
+    {
+        $user = User::where('activation_token', $token)->firstOrFail();
+
+        $user->activated = true;
+        $user->activation_token = null;
+        $user->save();
+
+        session()->flash('success', '恭喜你，激活成功！');
+        return redirect()->route('users.show', [$user]);
+    }
+
+    
     /*
      * 编辑用户资料
      * @author: plum
